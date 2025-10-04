@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spotify — Exclusive Track</title>
+
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #121212;
+      margin: 0;
+      color: #f1f1f1;
+    }
+    .card {
+      max-width: 480px;
+      background: #1e1e1e;
+      padding: 32px;
+      border-radius: 14px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      text-align: center;
+      z-index: 10; /* above video */
+      position: relative;
+    }
+    h1 { margin-bottom: 12px; }
+    p { color: #ccc; font-size: 16px; }
+    .btn {
+      background: #1DB954;
+      color: #ffffff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+      transition: background 0.3s ease, transform 0.2s ease;
+      cursor: pointer;
+    }
+    .btn:hover { background: #1ed760; transform: scale(1.03); }
+    .alt {
+      display: block;
+      margin-top: 14px;
+      font-size: 14px;
+      color: #8459b6;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .alt:hover { color: #ffffff; text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .card { padding: 24px; margin: 16px; }
+      p { font-size: 14px; }
+      .btn { width: 100%; font-size: 15px; }
+    }
+
+    /* Fullscreen video styling */
+    #rickrollVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1; /* behind card */
+      display: none;
+      background: black;
+      pointer-events: none; /* disables interactions */
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🎵 Spotify Exclusive 🎷🎧 🎵</h1>
+    <p>Listen to the unreleased track now.</p>
+    <button class="btn" id="spotifyBtn">Spotify</button>
+    <a class="alt" href="https://instagram.com/aaditya_frr">rollback</a>
+  </div>
+
+  <!-- Background music -->
+  <audio id="bgMusic" loop>
+    <source src="rick.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Local muted video -->
+  <video id="rickrollVideo" src="rickroll.mp4" muted autoplay playsinline></video>
+
+  <script>
+    const spotifyBtn = document.getElementById("spotifyBtn");
+    const music = document.getElementById("bgMusic");
+    const video = document.getElementById("rickrollVideo");
+
+    spotifyBtn.addEventListener("click", async () => {
+      // Play background music
+      music.play().catch(() => {
+        console.log("Background audio blocked; will play after user interaction.");
+      });
+
+      // Show and play muted video
+      video.style.display = "block";
+      try {
+        await video.play();
+        // Fullscreen
+        if (video.requestFullscreen) video.requestFullscreen();
+        else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+        else if (video.msRequestFullscreen) video.msRequestFullscreen();
+      } catch(err) {
+        console.error("Video playback failed:", err);
+      }
+    });
+
+    // Redirect after video ends
+    video.addEventListener("ended", () => {
+      window.location.href = "https://instagram.com/aaditya_frr";
+    });
+  </script>
+</body>
+</html>
